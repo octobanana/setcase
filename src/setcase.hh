@@ -2,8 +2,6 @@
 #define OB_SETCASE_HH
 
 #include <string>
-#include <sstream>
-#include <iostream>
 
 namespace OB
 {
@@ -11,9 +9,23 @@ namespace OB
 class Setcase
 {
 public:
-  Setcase();
+  enum ctype
+  {
+    Lower,
+    Upper
+  };
+
+  Setcase(std::string const& str = {});
+
+  std::string get(ctype type);
 
 private:
+  std::string str_;
+
+  char to_lower(char c) const;
+  char to_upper(char c) const;
+  std::string to_lower(std::string s) const;
+  std::string to_upper(std::string s) const;
 
 }; // class Setcase
 

@@ -8,6 +8,7 @@ using Setcase = OB::Setcase;
 #include <iostream>
 #include <vector>
 #include <map>
+#include <unistd.h>
 
 int program_options(Parg& pg);
 
@@ -16,7 +17,7 @@ int program_options(Parg& pg)
   pg.name("setcase").version("0.1.0 (02.24.2018)");
   pg.description("transform text to uppercase and lowercase");
   pg.usage("[flags] [options] [--] [arguments]");
-  pg.usage("[-u|-l] [input text]");
+  pg.usage("[-u|-l] [--] [input text]");
   pg.usage("[-v|--version]");
   pg.usage("[-h|--help]");
   pg.info("Exit Codes", {"0 -> normal", "1 -> error"});
@@ -36,7 +37,6 @@ int program_options(Parg& pg)
   pg.set_stdin();
 
   int status {pg.parse()};
-  // uncomment if at least one argument is expected
   if (status > 0 && pg.get_stdin().empty())
   {
     std::cout << pg.print_help() << "\n";
@@ -59,6 +59,17 @@ int program_options(Parg& pg)
     std::cout << pg.print_version();
     return 1;
   }
+  if (pg.get<bool>("lower") && pg.get<bool>("upper"))
+  {
+    std::cout << pg.print_help() << "\n";
+    std::cout << "Error: " << "flags '-l' and '-u' are in conflict" << "\n";
+    return 1;
+  }
+  if (pg.get_pos().empty() && pg.get_stdin().empty())
+  {
+    std::cout << pg.print_help() << "\n";
+    std::cout << "Error: " << "no input text given" << "\n";
+  }
   return 0;
 }
 
@@ -75,7 +86,33 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  Setcase sc;
+  Setcase sc {pg.get_stdin() + pg.get_pos()};
+
+  bool lower {pg.get<bool>("lower")};
+  bool upper {pg.get<bool>("upper")};
+
+  std::string out;
+
+  if (lower || upper)
+  {
+    if (lower)
+    {
+      out = sc.get(Setcase::Lower);
+    }
+    else
+    {
+      out = sc.get(Setcase::Upper);
+    }
+  }
+
+  if (! isatty(STDOUT_FILENO))
+  {
+    std::cout << out;
+  }
+  else
+  {
+    std::cout << out << "\n";
+  }
 
   return 0;
 }
