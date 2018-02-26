@@ -63,12 +63,13 @@ int program_options(Parg& pg)
   {
     std::cout << pg.print_help() << "\n";
     std::cout << "Error: " << "flags '-l' and '-u' are in conflict" << "\n";
-    return 1;
+    return -1;
   }
   if (pg.get_pos().empty() && pg.get_stdin().empty())
   {
     std::cout << pg.print_help() << "\n";
     std::cout << "Error: " << "no input text given" << "\n";
+    return -1;
   }
   return 0;
 }
@@ -103,6 +104,10 @@ int main(int argc, char *argv[])
     {
       out = sc.get(Setcase::Upper);
     }
+  }
+  else
+  {
+    out = sc.get(Setcase::Lower);
   }
 
   if (! isatty(STDOUT_FILENO))
