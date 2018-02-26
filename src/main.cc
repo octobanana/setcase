@@ -14,7 +14,7 @@ int program_options(Parg& pg);
 
 int program_options(Parg& pg)
 {
-  pg.name("setcase").version("0.1.0 (02.24.2018)");
+  pg.name("setcase").version("0.1.1 (26.02.2018)");
   pg.description("transform text to uppercase and lowercase");
   pg.usage("[flags] [options] [--] [arguments]");
   pg.usage("[-u|-l] [--] [input text]");
