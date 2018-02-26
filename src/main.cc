@@ -22,8 +22,12 @@ int program_options(Parg& pg)
   pg.usage("[-h|--help]");
   pg.info("Exit Codes", {"0 -> normal", "1 -> error"});
   pg.info("Examples", {
-    "hr --help",
-    "hr --version",
+    "setcase -u uppercase string",
+    "setcase -l 'LOWERCASE string'",
+    "setcase -l LOWERCASE | xargs printf \"%s\"",
+    "printf \"uppercase\" | setcase -u",
+    "setcase --help",
+    "setcase --version",
   });
   pg.author("Brett Robinson (octobanana) <octobanana.dev@gmail.com>");
 
