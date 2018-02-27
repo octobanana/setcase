@@ -14,13 +14,12 @@ int program_options(Parg& pg);
 
 int program_options(Parg& pg)
 {
-  pg.name("setcase").version("0.1.1 (26.02.2018)");
+  pg.name("setcase").version("0.1.2 (27.02.2018)");
   pg.description("transform text to uppercase and lowercase");
   pg.usage("[flags] [options] [--] [arguments]");
   pg.usage("[-u|-l] [--] [input text]");
   pg.usage("[-v|--version]");
   pg.usage("[-h|--help]");
-  pg.info("Exit Codes", {"0 -> normal", "1 -> error"});
   pg.info("Examples", {
     "setcase -u uppercase string",
     "setcase -l 'LOWERCASE string'",
@@ -29,6 +28,7 @@ int program_options(Parg& pg)
     "setcase --help",
     "setcase --version",
   });
+  pg.info("Exit Codes", {"0 -> normal", "1 -> error"});
   pg.author("Brett Robinson (octobanana) <octobanana.dev@gmail.com>");
 
   // flags
@@ -82,14 +82,8 @@ int main(int argc, char *argv[])
 {
   Parg pg {argc, argv};
   int pstatus {program_options(pg)};
-  if (pstatus > 0)
-  {
-    return 0;
-  }
-  else if (pstatus < 0)
-  {
-    return 1;
-  }
+  if (pstatus > 0) return 0;
+  if (pstatus < 0) return 1;
 
   Setcase sc {pg.get_stdin() + pg.get_pos()};
 
