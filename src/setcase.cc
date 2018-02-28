@@ -48,7 +48,7 @@ std::string Setcase::to_lower(std::string s) const
 {
   for (char &c : s)
   {
-    c = Setcase::to_lower(c);
+    c = to_lower(c);
   }
   return s;
 }
